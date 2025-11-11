@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     justifyContent: "center",
     marginBottom: hp(1.5),
-    width: "48%",
+    flex: 1, // Allows cards to grow and fill space evenly
   },
   articleImage: {
     width: "100%",
