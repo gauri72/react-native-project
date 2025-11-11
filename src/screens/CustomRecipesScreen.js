@@ -20,7 +20,7 @@ import {
     const dispatch = useDispatch();
   
     const route = useRoute();
-    const { recipe } = route.params || {}; // Pass the  object as a parameter
+  const { recipe, index = 0 } = route.params || {}; // Pass the  object as a parameter
     console.log('recipe',recipe);
     
     const favoriteRecipe = useSelector(
@@ -50,8 +50,14 @@ import {
       >
         {/* Recipe Image */}
         <View style={styles.imageContainer} testID="imageContainer">
-        {recipe.image && (
-            <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+        {recipe?.image && (
+            <Image
+              source={{ uri: recipe.image }}
+              style={[
+                styles.recipeImage,
+                { height: index % 3 === 0 ? hp(25) : hp(35) },
+              ]}
+            />
           )}
         </View>
         <View
