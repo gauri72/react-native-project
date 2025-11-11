@@ -84,6 +84,28 @@ import {
     <Text style={styles.sectionTitle}>Content</Text>
     <Text style={styles.contentText}>{recipe.description}</Text>
   </View>
+  <View style={styles.sectionContainer}>
+    <Text style={styles.sectionTitle}>Ingredients</Text>
+    {(recipe?.ingredients || []).length ? (
+      <View>
+        {(recipe.ingredients || []).map((ing, idx) => (
+          <Text key={idx} style={styles.contentText}>
+            {typeof ing === "string"
+              ? `• ${ing}`
+              : `• ${[ing.ingredientName, ing.measure].filter(Boolean).join(" - ")}`}
+          </Text>
+        ))}
+      </View>
+    ) : (
+      <Text style={styles.contentText}>No ingredients provided.</Text>
+    )}
+  </View>
+  <View style={styles.sectionContainer}>
+    <Text style={styles.sectionTitle}>Instructions</Text>
+    <Text style={styles.contentText}>
+      {recipe?.recipeInstructions || "No instructions provided."}
+    </Text>
+  </View>
         </View>
       </ScrollView>
     );

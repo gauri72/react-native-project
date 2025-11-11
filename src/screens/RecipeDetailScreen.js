@@ -94,6 +94,10 @@ export default function RecipeDetailScreen(props) {
                 {recipe?.recipeOrigin || recipe?.recipeCategory}
               </Text>
             </View>
+            <View style={styles.miscItem}>
+              <Text style={styles.miscIcon}>⚙️</Text>
+              <Text style={styles.miscText}>{recipe?.difficulty || "Medium"}</Text>
+            </View>
       </View>
 
       {/* Ingredients */}

@@ -10,6 +10,20 @@ export default function RecipesFormScreen({ route, navigation }) {
   const [description, setDescription] = useState(
     recipeToEdit ? recipeToEdit.description : ""
   );
+  const [ingredientsText, setIngredientsText] = useState(
+    recipeToEdit && Array.isArray(recipeToEdit.ingredients)
+      ? recipeToEdit.ingredients
+          .map((ing) =>
+            typeof ing === "string"
+              ? ing
+              : [ing.ingredientName, ing.measure].filter(Boolean).join(" - ")
+          )
+          .join("\n")
+      : ""
+  );
+  const [instructionsText, setInstructionsText] = useState(
+    recipeToEdit ? recipeToEdit.recipeInstructions || "" : ""
+  );
 
   const saverecipe = async () => {
     try {
@@ -17,6 +31,11 @@ export default function RecipesFormScreen({ route, navigation }) {
         title: title?.trim() || "",
         image: image?.trim() || "",
         description: description?.trim() || "",
+        ingredients: (ingredientsText || "")
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        recipeInstructions: instructionsText?.trim() || "",
       };
       const stored = await AsyncStorage.getItem("customrecipes");
       const recipes = stored ? JSON.parse(stored) : [];
@@ -62,6 +81,22 @@ export default function RecipesFormScreen({ route, navigation }) {
         onChangeText={setDescription}
         multiline={true}
         numberOfLines={4}
+        style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
+      />
+      <TextInput
+        placeholder="Ingredients (one per line)"
+        value={ingredientsText}
+        onChangeText={setIngredientsText}
+        multiline={true}
+        numberOfLines={6}
+        style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
+      />
+      <TextInput
+        placeholder="Instructions"
+        value={instructionsText}
+        onChangeText={setInstructionsText}
+        multiline={true}
+        numberOfLines={6}
         style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
       />
       <TouchableOpacity onPress={saverecipe} style={styles.saveButton}>
