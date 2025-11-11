@@ -15,8 +15,12 @@ export default function Recipe({ categories, foods }) {
       <View testID="recipesDisplay">
             <FlatList
               data={foods}
-              keyExtractor={(item) => item.idFood?.toString() ?? String(item.recipeId ?? index)}
+              keyExtractor={(item, idx) =>
+                item.idFood?.toString() ?? String(item.recipeId ?? idx)
+              }
               renderItem={renderItem}
+              numColumns={2}
+              columnWrapperStyle={styles.row}
               contentContainerStyle={{ paddingBottom: hp(2) }}
               showsVerticalScrollIndicator={false}
             />
@@ -28,16 +32,18 @@ export default function Recipe({ categories, foods }) {
 const ArticleCard = ({ item, index, navigation }) => {
   return (
     <View
-      style={[styles.cardContainer, { paddingLeft: 20, paddingRight: 15}]} testID="articleDisplay"
+      style={[styles.cardContainer, { paddingLeft: 10, paddingRight: 10 }]} testID="articleDisplay"
     >
       <TouchableOpacity onPress={() => navigation.navigate("RecipeDetail", item)}>
         <Image
           source={{ uri: item.recipeImage }}
-          style={[styles.articleImage, { height: hp(25) }]}
+          style={[styles.articleImage, { height: hp(20) }]}
           resizeMode="cover"
         />
-        <Text style={styles.articleText}>{item.recipeName}</Text>
-        <Text style={styles.articleDescription}>{item.recipeCategory}</Text>
+        <Text style={styles.articleText} numberOfLines={1}>{item.recipeName}</Text>
+        <Text style={styles.articleDescription} numberOfLines={2}>
+          {item.cookingDescription || item.recipeCategory}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     justifyContent: "center",
     marginBottom: hp(1.5),
-    flex: 1, // Allows cards to grow and fill space evenly
+    width: "48%",
   },
   articleImage: {
     width: "100%",
